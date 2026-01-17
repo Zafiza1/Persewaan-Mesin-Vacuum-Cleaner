@@ -1,7 +1,7 @@
 # Akasa Teknik - Apache Configuration
 
-# Set environment to development (change to 'production' for live server)
-SetEnv ENVIRONMENT development
+# Set environment to production for live server
+SetEnv ENVIRONMENT production
 
 # Security headers
 Header always set X-Content-Type-Options nosniff

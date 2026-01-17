@@ -8,7 +8,7 @@
                 <ul class="list-unstyled">
                     <li><i class="fas fa-phone-alt me-2"></i> 085854145578</li>
                     <li><i class="fas fa-envelope me-2"></i> @gmail.com</li>
-                    <li><i class="fas fa-clock me-2"></i> Buka: Senin - Sabtu, 08:00 - 17:00</li>
+                    <li><i class="fas fa-clock me-2"></i> Senin - Jumat: 08:00 - 17:00, Sabtu: 08:00 - 13:00</li>
                 </ul>
             </div>
             <div class="col-md-6">

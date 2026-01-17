@@ -9,13 +9,14 @@
 require_once 'environment.php';
 
 // Database configuration
-$host = "localhost";
+$host = "127.0.0.1";
+$port = "3306";
 $username = "root";
 $password = "";
 $database = "akasa";
 
 // Create connection
-$conn = new mysqli($host, $username, $password, $database);
+$conn = new mysqli($host, $username, $password, $database, $port);
 
 // Check connection
 if ($conn->connect_error) {

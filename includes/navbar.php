@@ -44,9 +44,6 @@
                         <a class="nav-link" href="<?php echo PAGES_URL; ?>produk.php">Produk</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?php echo PAGES_URL; ?>sewa.php">Sewa</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="<?php echo PAGES_URL; ?>kontak.php">Kontak</a>
                     </li>
                 <?php endif; ?>

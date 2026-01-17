@@ -1,0 +1,24 @@
+# Cloudflare Tunnel Configuration for Akasa Teknik
+# Save this as: %USERPROFILE%\.cloudflared\config.yml
+
+tunnel: akasa-website
+credentials-file: C:\Users\[YOUR_USERNAME]\.cloudflared\[TUNNEL_ID].json
+
+ingress:
+  # Main website
+  - hostname: your-domain.com
+    service: http://localhost:80
+  
+  # Alternative subdomains
+  - hostname: www.your-domain.com
+    service: http://localhost:80
+    
+  - hostname: akasa.your-domain.com
+    service: http://localhost:80
+    
+  # Admin panel
+  - hostname: admin.your-domain.com
+    service: http://localhost:80/akasa_teknik/admin/
+  
+  # Catch all - return 404
+  - service: http_status:404

@@ -38,10 +38,7 @@ if ($products === false) {
         <div class="alert alert-success"><?php echo $_SESSION['success_message']; unset($_SESSION['success_message']); ?></div>
     <?php endif; ?>
     
-    <?php if(isset($error_message)): ?>
-        <div class="alert alert-danger"><?php echo htmlspecialchars($error_message); ?></div>
-    <?php endif; ?>
-    
+        
     <section class="products-section">
         <div class="row">
             <?php if(!empty($products)): ?>

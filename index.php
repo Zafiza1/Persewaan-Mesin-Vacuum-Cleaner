@@ -23,7 +23,7 @@ require_once __DIR__ . '/includes/header.php';
                 <span class="glass-badge hero-label mb-3 d-inline-flex align-items-center gap-2">
                     <i class="fas fa-bolt"></i> Akasa Teknik
                 </span>
-                <h1 class="hero-title mb-4">Sewa Vacuum Cleaner Profesional</h1>
+                <h1 class="hero-title mb-4">Sewa Vacuum Cleaner</h1>
                 <p class="lead hero-subtitle mb-5">Pilih mesin, tentukan jadwal, kami kerjakan sisanya.</p>
 
                 <div class="d-flex flex-wrap gap-3 mb-4">
@@ -141,8 +141,54 @@ require_once __DIR__ . '/includes/header.php';
                             </div>
                             <span class="text-muted">5.0/5.0</span>
                         </div>
-                        <p class="mb-2">"Mesin selalu dalam kondisi baik, pengantaran tepat waktu. Sangat membantu proyek cleaning kami!"</p>
-                        <p class="mb-0 fw-bold">- PT. Clean Indonesia</p>
+                        <p class="mb-2">"Pemiliknya sangat berpengalaman dalam menangani penyedot debu dan dapat menyediakan layanan penyewaan penyedot debu atau konsultasi teknis tentang penyedot debu."</p>
+                        <p class="mb-0 fw-bold">- Alfiyan</p>
+                        <small class="text-muted">Panduan Lokal · 10 ulasan · 19 foto · 11 bulan yang lalu</small>
+                    </div>
+                    <div class="testimonial-item p-3 bg-light rounded mb-3">
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="stars text-warning me-2">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="text-muted">5.0/5.0</span>
+                        </div>
+                        <p class="mb-2">"Bagus sekali"</p>
+                        <p class="mb-0 fw-bold">- pudjiati dishut</p>
+                        <small class="text-muted">1 ulasan · 7 tahun yang lalu</small>
+                    </div>
+                    <div class="testimonial-item p-3 bg-light rounded mb-3">
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="stars text-warning me-2">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="text-muted">5.0/5.0</span>
+                        </div>
+                        <p class="mb-2">"Praktis, respons cepat 👍…"</p>
+                        <p class="mb-0 fw-bold">- Khanif Nugroho</p>
+                        <small class="text-muted">2 ulasan · 6 tahun yang lalu</small>
+                    </div>
+                    <div class="testimonial-item p-3 bg-light rounded mb-3">
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="stars text-warning me-2">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="text-muted">5.0/5.0</span>
+                        </div>
+                        <p class="mb-2">"Layanan yang memuaskan, hasil kerja yang rapi."</p>
+                        <p class="mb-0 fw-bold">- Live Hanim</p>
+                        <small class="text-muted">1 foto · 6 tahun yang lalu</small>
                     </div>
                     <div class="testimonial-item p-3 bg-light rounded">
                         <div class="d-flex align-items-center mb-2">
@@ -155,8 +201,9 @@ require_once __DIR__ . '/includes/header.php';
                             </div>
                             <span class="text-muted">5.0/5.0</span>
                         </div>
-                        <p class="mb-2">"Harga terjangkau, pelayanan memuaskan. Recommended untuk jasa cleaning service."</p>
-                        <p class="mb-0 fw-bold">- Budi Santoso, Cleaning Service</p>
+                        <p class="mb-2">"Pelayanan terbaik, mesin selalu dalam kondisi prima."</p>
+                        <p class="mb-0 fw-bold">- Fahmi Rizal</p>
+                        <small class="text-muted">4 ulasan · 6 tahun yang lalu</small>
                     </div>
                 </div>
             </div>
@@ -167,16 +214,6 @@ require_once __DIR__ . '/includes/header.php';
 <!-- CTA Section -->
 <section class="py-5 bg-primary text-white">
     <div class="container text-center">
-        <h2 class="fw-bold mb-3">Siap Mulai Proyek Cleaning Anda?</h2>
-        <p class="lead mb-4">Dapatkan vacuum cleaner terbaik dengan harga terjangkau</p>
-        <div class="d-flex flex-wrap justify-content-center gap-3">
-            <a href="<?php echo PAGES_URL; ?>produk.php" class="btn btn-light btn-lg text-primary fw-bold">
-                <i class="fas fa-shopping-cart me-2"></i>SEWA SEKARANG
-            </a>
-            <a href="<?php echo PAGES_URL; ?>kontak.php" class="btn btn-outline-light btn-lg">
-                <i class="fas fa-phone me-2"></i>KONSULTASI GRATIS
-            </a>
-        </div>
     </div>
 </section>
 

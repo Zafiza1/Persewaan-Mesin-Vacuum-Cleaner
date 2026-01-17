@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     
                     <div class="mb-3">
                         <h6><i class="fas fa-clock text-primary me-2"></i> Jam Operasional</h6>
-                        <p>Senin - Sabtu: 08:00 - 17:00 WIB</p>
+                        <p>Senin - Jumat: 08:00 - 17:00 WIB<br>Sabtu: 08:00 - 13:00 WIB</p>
                     </div>
                 </div>
             </div>
