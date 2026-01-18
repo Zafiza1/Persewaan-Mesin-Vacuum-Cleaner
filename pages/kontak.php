@@ -5,18 +5,6 @@ ob_start();
 require_once __DIR__ . '/../config/paths.php';
 require_once __DIR__ . '/../includes/header.php';
 
-// Check if the form is submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nama = $_POST['nama'] ?? '';
-    $email = $_POST['email'] ?? '';
-    $subjek = $_POST['subjek'] ?? '';
-    $pesan = $_POST['pesan'] ?? '';
-
-    // Here you can add code to process the form data, like sending an email or saving to a database
-    // For now, let's just redirect to the same page (you can change this later)
-    header("Location: " . PAGES_URL . "kontak.php");
-    exit();
-}
 ?>
 
 <div class="container mt-4">
@@ -50,42 +38,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                 </div>
             </div>
-        </div>
-        
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">Kirim Pesan</h5>
-                </div>
-                <div class="card-body">
-<form action="<?php echo PAGES_URL; ?>kontak.php" method="POST">
-                        <div class="mb-3">
-                            <label class="form-label">Nama Lengkap</label>
-                            <input type="text" class="form-control" name="nama" required>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label class="form-label">Email</label>
-                            <input type="email" class="form-control" name="email" required>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label class="form-label">Subjek</label>
-                            <input type="text" class="form-control" name="subjek" required>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label class="form-label">Pesan</label>
-                            <textarea class="form-control" name="pesan" rows="5" required></textarea>
-                        </div>
-                        
-                        <button type="submit" class="btn btn-primary w-100">
-                            <i class="fas fa-paper-plane me-1"></i> Kirim Pesan
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
     </div>
     
     <div class="card mt-4">

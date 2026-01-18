@@ -1,4 +1,7 @@
 <?php
+// Start session
+session_start();
+
 // Start output buffering to prevent headers already sent errors
 ob_start();
 
@@ -7,13 +10,13 @@ require_once __DIR__ . '/../config/paths.php';
 
 // Use path constants for includes
 require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../includes/functions.php';
 require_once __DIR__ . '/../includes/security.php';
-require_once __DIR__ . '/../includes/header.php';
 
 // Redirect if not logged in as user
-if(!isset($_SESSION['user_id'])) {
+if(!is_user_logged_in()) {
     $_SESSION['login_redirect'] = 'user/profile.php';
-    redirect_with_message('login.php', 'Silakan login untuk mengakses profil Anda.', 'warning');
+    redirect('login.php', 'Silakan login untuk mengakses profil Anda.', 'warning');
 }
 
 $user_id = $_SESSION['user_id'];
@@ -51,47 +54,51 @@ try {
 
 // Handle profile update
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Sanitize and validate input
-    $nama_lengkap = sanitize_input($_POST['nama_lengkap'] ?? '');
-    $no_hp = sanitize_input($_POST['no_hp'] ?? '');
-    $alamat = sanitize_input($_POST['alamat'] ?? '');
-    
-    // Validation
-    if (empty($nama_lengkap)) {
-        $error = "Nama lengkap harus diisi.";
-    }
-    
-    if (!validate_phone($no_hp)) {
-        $error = "Format nomor HP tidak valid.";
-    }
-    
-    if (empty($alamat)) {
-        $error = "Alamat harus diisi.";
-    }
-    
-    // Update user profile if no errors
-    if (empty($error)) {
-        try {
-            $stmt = $conn->prepare("UPDATE penyewa SET nama_lengkap = ?, no_hp = ?, alamat = ? WHERE id = ?");
-            $stmt->bind_param("sssi", $nama_lengkap, $no_hp, $alamat, $user_id);
-            
-            if (!$stmt->execute()) {
-                throw new Exception("Terjadi kesalahan saat memperbarui profil. Silakan coba lagi.");
+    // Verify CSRF token
+    if (!isset($_POST['csrf_token']) || !verify_csrf_token($_POST['csrf_token'])) {
+        $error = "Token keamanan tidak valid. Silakan coba lagi.";
+    } else {
+        // Sanitize and validate input
+        $nama_lengkap = sanitize_input($_POST['nama_lengkap'] ?? '');
+        $no_hp = sanitize_input($_POST['no_hp'] ?? '');
+        $alamat = sanitize_input($_POST['alamat'] ?? '');
+        
+        // Validation
+        if (empty($nama_lengkap)) {
+            $error = "Nama lengkap harus diisi.";
+        } elseif (!validate_phone($no_hp)) {
+            $error = "Format nomor HP tidak valid.";
+        } elseif (empty($alamat)) {
+            $error = "Alamat harus diisi.";
+        } else {
+            // Update user profile if no errors
+            try {
+                $stmt = $conn->prepare("UPDATE penyewa SET nama_lengkap = ?, no_hp = ?, alamat = ? WHERE id = ?");
+                $stmt->bind_param("sssi", $nama_lengkap, $no_hp, $alamat, $user_id);
+                
+                if (!$stmt->execute()) {
+                    throw new Exception("Terjadi kesalahan saat memperbarui profil. Silakan coba lagi.");
+                }
+                
+                $success = "Profil berhasil diperbarui.";
+                $stmt->close();
+                
+                // Refresh user data
+                $user['nama_lengkap'] = $nama_lengkap;
+                $user['no_hp'] = $no_hp;
+                $user['alamat'] = $alamat;
+                
+            } catch (Exception $e) {
+                $error = $e->getMessage();
             }
-            
-            $success = "Profil berhasil diperbarui.";
-            $stmt->close();
-            
-            // Refresh user data
-            $user['nama_lengkap'] = $nama_lengkap;
-            $user['no_hp'] = $no_hp;
-            $user['alamat'] = $alamat;
-            
-        } catch (Exception $e) {
-            $error = $e->getMessage();
         }
     }
 }
+?>
+
+<?php
+// Include header after processing
+require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="container mt-5">
@@ -106,21 +113,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <?php endif; ?>
     
     <form method="POST" action="profile.php">
+        <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
+        
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" id="username" value="<?php echo htmlspecialchars($user['username'] ?? ''); ?>" readonly>
+            <small class="text-muted">Username tidak dapat diubah</small>
+        </div>
+        
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" value="<?php echo htmlspecialchars($user['email'] ?? ''); ?>" readonly>
+            <small class="text-muted">Email tidak dapat diubah</small>
+        </div>
+        
         <div class="mb-3">
             <label for="nama_lengkap" class="form-label">Nama Lengkap</label>
             <input type="text" class="form-control" id="nama_lengkap" name="nama_lengkap" 
-                   value="<?php echo htmlspecialchars($user['nama_lengkap']); ?>" required>
+                   value="<?php echo htmlspecialchars($user['nama_lengkap'] ?? ''); ?>" required>
         </div>
         
         <div class="mb-3">
             <label for="no_hp" class="form-label">Nomor HP</label>
             <input type="tel" class="form-control" id="no_hp" name="no_hp" 
-                   value="<?php echo htmlspecialchars($user['no_hp']); ?>" required>
+                   value="<?php echo htmlspecialchars($user['no_hp'] ?? ''); ?>" required>
         </div>
         
         <div class="mb-3">
             <label for="alamat" class="form-label">Alamat</label>
-            <textarea class="form-control" id="alamat" name="alamat" rows="3" required><?php echo htmlspecialchars($user['alamat']); ?></textarea>
+            <textarea class="form-control" id="alamat" name="alamat" rows="3" required><?php echo htmlspecialchars($user['alamat'] ?? ''); ?></textarea>
         </div>
         
         <div class="d-grid gap-2">

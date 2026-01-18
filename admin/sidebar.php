@@ -24,11 +24,5 @@ unset($_SESSION['flash_type']);
         <a href="manage_orders.php" class="list-group-item list-group-item-action <?php echo basename($_SERVER['PHP_SELF']) == 'manage_orders.php' ? 'active' : ''; ?>">
             <i class="fas fa-shopping-cart me-2"></i>Kelola Pesanan
         </a>
-        <a href="logs.php" class="list-group-item list-group-item-action <?php echo basename($_SERVER['PHP_SELF']) == 'logs.php' ? 'active' : ''; ?>">
-            <i class="fas fa-history me-2"></i>Audit Trail & Logs
-        </a>
-        <a href="../user/logout.php" class="list-group-item list-group-item-action text-danger">
-            <i class="fas fa-sign-out-alt me-2"></i>Logout
-        </a>
     </div>
 </div>

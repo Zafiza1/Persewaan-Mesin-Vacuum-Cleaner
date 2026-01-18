@@ -5,14 +5,20 @@ ob_start();
 // Include path configuration
 require_once __DIR__ . '/../config/paths.php';
 
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 // Use path constants for includes
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../includes/functions.php';
 require_once __DIR__ . '/../includes/security.php';
+require_once __DIR__ . '/../includes/database_helper.php';
 
 // Check admin privileges first
 if (!isAdmin()) {
-    redirect('/admin/login.php');
+    redirect(ADMIN_URL . 'login.php');
 }
 
 // Handle delete action

@@ -73,7 +73,7 @@ try {
                     <h2 class="mb-1">Riwayat Sewa</h2>
                     <p class="text-muted mb-0">Kelola dan pantau semua penyewaan Anda</p>
                 </div>
-                <a href="<?php echo BASE_URL; ?>form_sewa_simple.php" class="btn btn-primary btn-lg">
+                <a href="<?php echo BASE_URL; ?>pages/produk.php" class="btn btn-primary btn-lg">
                     <i class="fas fa-plus me-2"></i> Sewa Baru
                 </a>
             </div>
@@ -132,7 +132,7 @@ try {
                     </div>
                     <h4 class="text-muted mb-3">Belum Ada Riwayat Sewa</h4>
                     <p class="text-muted mb-4">Anda belum memiliki riwayat penyewaan. Mulai sewa vacuum cleaner sekarang!</p>
-                    <a href="<?php echo BASE_URL; ?>form_sewa_simple.php" class="btn btn-primary btn-lg">
+                    <a href="<?php echo BASE_URL; ?>pages/produk.php" class="btn btn-primary btn-lg">
                         <i class="fas fa-shopping-cart me-2"></i> Mulai Sewa Sekarang
                     </a>
                 </div>
@@ -261,31 +261,47 @@ document.addEventListener('DOMContentLoaded', function() {
     const resetFilter = document.getElementById('resetFilter');
     const ordersContainer = document.getElementById('ordersContainer');
     const noResults = document.getElementById('noResults');
-    
+
+    // Global resetFilters function
+    window.resetFilters = function() {
+        const filterStatus = document.getElementById('filterStatus');
+        const sortBy = document.getElementById('sortBy');
+        const sortOrder = document.getElementById('sortOrder');
+
+        if (filterStatus) filterStatus.value = '';
+        if (sortBy) sortBy.value = 'tanggal_sewa';
+        if (sortOrder) sortOrder.value = 'desc';
+
+        // Call applyFilters if it exists
+        if (typeof applyFilters === 'function') {
+            applyFilters();
+        }
+    };
+
     if (filterStatus && sortBy && sortOrder && resetFilter) {
         // Event listeners
         filterStatus.addEventListener('change', applyFilters);
         sortBy.addEventListener('change', applyFilters);
         sortOrder.addEventListener('change', applyFilters);
         resetFilter.addEventListener('click', resetFilters);
-        
+
         function applyFilters() {
             const statusFilter = filterStatus.value.toLowerCase();
             const sortField = sortBy.value;
             const sortDirection = sortOrder.value;
-            
+
             const orderItems = Array.from(document.querySelectorAll('.order-item'));
-            
+
             // Filter
             let filteredItems = orderItems.filter(item => {
                 if (!statusFilter) return true;
                 return item.dataset.status.toLowerCase() === statusFilter;
             });
-            
+
             // Sort
             filteredItems.sort((a, b) => {
                 let aVal, bVal;
-                
+
                 switch(sortField) {
                     case 'tanggal_sewa':
                         aVal = new Date(a.dataset.date);
@@ -302,34 +318,28 @@ document.addEventListener('DOMContentLoaded', function() {
                     default:
                         return 0;
                 }
-                
+
                 if (sortDirection === 'asc') {
                     return aVal > bVal ? 1 : -1;
                 } else {
                     return aVal < bVal ? 1 : -1;
                 }
             });
-            
-            // Re-render
+
+            // Hide all items first
+            orderItems.forEach(item => item.style.display = 'none');
+
+            // Show and reorder filtered items
             if (filteredItems.length === 0) {
-                ordersContainer.style.display = 'none';
                 noResults.style.display = 'block';
             } else {
-                ordersContainer.style.display = 'flex';
                 noResults.style.display = 'none';
-                
-                // Clear and re-append
-                orderItems.forEach(item => item.remove());
-                filteredItems.forEach(item => ordersContainer.appendChild(item));
+                filteredItems.forEach(item => {
+                    item.style.display = 'block';
+                    ordersContainer.appendChild(item);
+                });
             }
         }
-        
-        window.resetFilters = function() {
-            filterStatus.value = '';
-            sortBy.value = 'tanggal_sewa';
-            sortOrder.value = 'desc';
-            applyFilters();
-        };
     }
 });
 </script>

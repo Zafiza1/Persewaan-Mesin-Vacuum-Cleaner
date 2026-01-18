@@ -15,11 +15,27 @@ function getSafeProductQuery($conn, $where = '', $params = []) {
     // First, check which price column exists
     $price_column = detectPriceColumn($conn);
     
-    // Base columns that we know exist
-    $base_columns = ['id', 'nama_mesin', 'deskripsi', 'stok', 'gambar'];
+    // Build safe column list with auto-detection
+    $columns = [];
     
-    // Build query with detected price column
-    $query = "SELECT " . implode(', ', $base_columns) . ", $price_column as harga_sewa_per_hari FROM produk";
+    // Always present columns
+    $always_columns = ['id', 'nama_mesin', 'stok', 'gambar'];
+    foreach ($always_columns as $col) {
+        $columns[] = $col;
+    }
+    
+    // Optional columns - check existence
+    $optional_columns = ['merk', 'spesifikasi', 'deskripsi', 'created_at', 'updated_at'];
+    foreach ($optional_columns as $col) {
+        $check = $conn->query("SELECT COUNT(*) as count FROM INFORMATION_SCHEMA.COLUMNS 
+                              WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'produk' AND COLUMN_NAME = '$col'");
+        if ($check && $check->fetch_row()[0] > 0) {
+            $columns[] = $col;
+        }
+    }
+    
+    // Build query with detected columns
+    $query = "SELECT " . implode(', ', $columns) . ", $price_column as harga_sewa_per_hari FROM produk";
     
     if (!empty($where)) {
         $query .= " WHERE $where";

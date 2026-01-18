@@ -11,6 +11,7 @@ require_once __DIR__ . '/../config/paths.php';
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../includes/functions.php';
 require_once __DIR__ . '/../includes/security.php';
+require_once __DIR__ . '/../includes/database_helper.php';
 
 if (!is_admin()) {
     redirect_with_message(ADMIN_URL . 'login.php', 'Silakan login sebagai admin.', 'warning');
@@ -65,9 +66,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_status'])) {
     redirect(ADMIN_URL . 'manage_orders.php');
 }
 
-// Get all orders with customer and product info
+// Get all orders with customer and product info using safe query
+$price_column = detectPriceColumn($conn);
 $orders = $conn->query("
-    SELECT s.*, p.nama_lengkap as nama_penyewa, pr.nama_mesin, pr.harga_sewa_per_hari
+    SELECT s.*, p.nama_lengkap as nama_penyewa, pr.nama_mesin, $price_column as harga_sewa_per_hari
     FROM sewa s
     JOIN penyewa p ON s.id_penyewa = p.id
     JOIN produk pr ON s.id_produk = pr.id

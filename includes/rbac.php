@@ -4,7 +4,6 @@
  * Provides comprehensive role and permission management
  */
 
-require_once __DIR__ . '/logging.php';
 
 // Define roles and permissions
 define('ROLE_GUEST', 'guest');
@@ -106,15 +105,7 @@ function require_permission($permission, $redirect_url = null) {
     if (!has_permission($permission)) {
         $current_role = get_current_user_role();
         
-        // Log unauthorized access attempt
-        log_security_event('unauthorized_access', [
-            'required_permission' => $permission,
-            'user_role' => $current_role,
-            'ip_address' => $_SERVER['REMOTE_ADDR'] ?? 'unknown',
-            'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? 'unknown',
-            'request_uri' => $_SERVER['REQUEST_URI'] ?? 'unknown'
-        ]);
-        
+                
         if ($redirect_url === null) {
             // Default redirect based on user role
             if ($current_role === ROLE_GUEST) {
@@ -142,14 +133,7 @@ function require_role($required_roles, $redirect_url = null) {
     $required_roles = is_array($required_roles) ? $required_roles : [$required_roles];
     
     if (!in_array($current_role, $required_roles)) {
-        // Log unauthorized role access attempt
-        log_security_event('unauthorized_role_access', [
-            'required_roles' => implode(', ', $required_roles),
-            'user_role' => $current_role,
-            'ip_address' => $_SERVER['REMOTE_ADDR'] ?? 'unknown',
-            'request_uri' => $_SERVER['REQUEST_URI'] ?? 'unknown'
-        ]);
-        
+                
         if ($redirect_url === null) {
             if ($current_role === ROLE_GUEST) {
                 $redirect_url = BASE_URL . 'user/login.php';

@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         $nama_mesin = trim($_POST['nama_mesin']);
         $deskripsi = trim($_POST['deskripsi']);
-        $harga_sewa_per_hari = (float)$_POST['harga_sewa_per_hari'];
+        $harga_sewa = (float)$_POST['harga_sewa'];
         $stok = (int)$_POST['stok'];
         
         // Validate inputs
@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $errors[] = "Deskripsi harus diisi";
         }
         
-        if ($harga_sewa_per_hari <= 0) {
+        if ($harga_sewa <= 0) {
             $errors[] = "Harga sewa harus lebih dari 0";
         }
         
@@ -109,16 +109,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // If no errors, proceed with upload and database insertion
             if (empty($errors)) {
                 if (move_uploaded_file($_FILES['gambar']['tmp_name'], $target_path)) {
-                    // Insert to database
-                    $sql = "INSERT INTO produk (nama_mesin, deskripsi, harga_sewa_per_hari, stok, gambar) 
-                            VALUES ('$nama_mesin', '$deskripsi', $harga_sewa_per_hari, $stok, '$new_name')";
+                    // Insert to database using prepared statement
+                    $sql = "INSERT INTO produk (nama_mesin, deskripsi, harga_sewa, stok, gambar) 
+                            VALUES (?, ?, ?, ?, ?)";
                     
-                    if ($conn->query($sql)) {
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param("ssdis", $nama_mesin, $deskripsi, $harga_sewa, $stok, $new_name);
+                    
+                    if ($stmt->execute()) {
                         $_SESSION['success'] = "Produk berhasil ditambahkan";
                         redirect(ADMIN_URL . 'manage_products.php');
                     } else {
-                        $errors[] = "Error database: ".$conn->error;
+                        $errors[] = "Error database: ".$stmt->error;
                     }
+                    $stmt->close();
                 } else {
                     $errors[] = "Gagal mengupload gambar";
                 }
@@ -161,7 +165,7 @@ include '../includes/header.php';
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label class="form-label">Harga Sewa per Hari</label>
-                <input type="number" class="form-control" name="harga_sewa_per_hari" min="0" step="1000" value="<?php echo isset($_POST['harga_sewa_per_hari']) ? htmlspecialchars($_POST['harga_sewa_per_hari']) : ''; ?>" required>
+                <input type="number" class="form-control" name="harga_sewa" min="0" step="1000" value="<?php echo isset($_POST['harga_sewa']) ? htmlspecialchars($_POST['harga_sewa']) : ''; ?>" required>
             </div>
             <div class="col-md-6 mb-3">
                 <label class="form-label">Stok Tersedia</label>

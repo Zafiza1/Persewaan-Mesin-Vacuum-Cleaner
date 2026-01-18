@@ -15,16 +15,8 @@ require_once BASE_PATH . 'includes/header.php';
         
         <div class="col-md-9">
             <div class="card">
-                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <div class="card-header bg-primary text-white">
                     <h4 class="mb-0">Kelola Penyewaan</h4>
-                    <div>
-                        <div class="input-group" style="width: 250px;">
-                            <input type="text" class="form-control" id="searchPenyewa" placeholder="Cari penyewa..." onkeyup="searchPenyewa()">
-                            <button class="btn btn-light" type="button">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </div>
-                    </div>
                 </div>
                 <div class="card-body">
                     <?php if (empty($rentals)): ?>
@@ -55,10 +47,7 @@ require_once BASE_PATH . 'includes/header.php';
                                             <td>#<?= $rental['id'] ?></td>
                                             <td><?= date('d/m/Y', strtotime($rental['tanggal_sewa'])) ?></td>
                                             <td>
-                                                <div>
-                                                    <strong><?= htmlspecialchars($rental['nama_penyewa']) ?></strong><br>
-                                                    <small class="text-muted"><?= htmlspecialchars($rental['email']) ?></small>
-                                                </div>
+                                                <strong><?= htmlspecialchars($rental['nama_penyewa']) ?></strong>
                                             </td>
                                             <td><?= htmlspecialchars($rental['nama_mesin']) ?></td>
                                             <td>

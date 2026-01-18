@@ -15,7 +15,7 @@ require_once __DIR__ . '/../includes/database_helper.php';
 
 // Check admin privileges first
 if (!isAdmin()) {
-    redirect('/admin/login.php');
+    redirect(ADMIN_URL . 'login.php');
 }
 
 // Get product ID
@@ -27,7 +27,7 @@ $product = getProductById($conn, $id);
 // Redirect if product not found
 if (!$product) {
     $_SESSION['error'] = "Produk tidak ditemukan";
-    redirect('/admin/manage_products.php');
+    redirect(ADMIN_URL . 'manage_products.php');
 }
 
 // Handle form submission
@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $gambar = $product['gambar']; // Default to existing image
     
     if (isset($_FILES['gambar']) && $_FILES['gambar']['error'] == 0) {
-        $upload_dir = $_SERVER['DOCUMENT_ROOT'].'/akasa_teknik/assets/images/products/';
+        $upload_dir = BASE_PATH . 'assets/images/products/';
         $file_name = basename($_FILES['gambar']['name']);
         $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
         $new_name = uniqid('product_', true).'.'.$file_ext;
@@ -65,12 +65,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     
     // Update product
-    $stmt = $conn->prepare("UPDATE produk SET nama_mesin = ?, deskripsi = ?, harga_sewa_per_hari = ?, stok = ?, gambar = ? WHERE id = ?");
+    $price_column = detectPriceColumn($conn);
+    // Extract the actual column name from the detected column
+    if ($price_column === '0 as harga_sewa_per_hari') {
+        $actual_price_column = 'harga_sewa_per_hari'; // fallback
+    } elseif (strpos($price_column, ' as ') !== false) {
+        $parts = explode(' as ', $price_column);
+        $actual_price_column = $parts[0];
+    } else {
+        $actual_price_column = $price_column;
+    }
+    
+    $stmt = $conn->prepare("UPDATE produk SET nama_mesin = ?, deskripsi = ?, $actual_price_column = ?, stok = ?, gambar = ? WHERE id = ?");
     $stmt->bind_param("ssdisi", $nama_mesin, $deskripsi, $harga_sewa_per_hari, $stok, $gambar, $id);
     
     if ($stmt->execute()) {
         $_SESSION['success'] = "Produk berhasil diperbarui";
-        redirect('/admin/manage_products.php');
+        redirect(ADMIN_URL . 'manage_products.php');
     } else {
         $errors[] = "Error database: ".$conn->error;
     }
@@ -122,7 +133,7 @@ include '../includes/header.php';
         <div class="mb-3">
             <label class="form-label">Gambar Produk Saat Ini</label>
             <div>
-                <img src="/assets/images/products/<?= $product['gambar'] ?>" alt="<?= $product['nama_mesin'] ?>" class="img-thumbnail" style="width: 150px;">
+                <img src="<?php echo BASE_URL; ?>assets/images/products/<?= $product['gambar'] ?>" alt="<?= $product['nama_mesin'] ?>" class="img-thumbnail" style="width: 150px;">
             </div>
         </div>
         
@@ -133,7 +144,7 @@ include '../includes/header.php';
         </div>
         
         <button type="submit" class="btn btn-primary">Update Produk</button>
-        <a href="/admin/manage_products.php" class="btn btn-secondary">Batal</a>
+        <a href="<?php echo ADMIN_URL; ?>manage_products.php" class="btn btn-secondary">Batal</a>
     </form>
 </div>
 

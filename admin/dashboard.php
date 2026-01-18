@@ -34,14 +34,25 @@ $total_transaksi = $result ? $result->fetch_assoc()['total'] : 0;
 $result = $conn->query("SELECT SUM(total_harga) as total FROM sewa WHERE MONTH(tanggal_sewa) = MONTH(CURRENT_DATE()) AND YEAR(tanggal_sewa) = YEAR(CURRENT_DATE())");
 $pendapatan_bulan_ini = $result ? ($result->fetch_assoc()['total'] ?? 0) : 0;
 
-// Ambil 5 transaksi terbaru
-$transaksi_terbaru = $conn->query("SELECT s.*, p.nama_lengkap as nama_penyewa, pr.nama_mesin 
+// Pagination settings for all transactions
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$per_page = 10;
+$offset = ($page - 1) * $per_page;
+
+// Get total transactions for pagination
+$total_result = $conn->query("SELECT COUNT(*) as total FROM sewa");
+$total_transaksi = $total_result ? $total_result->fetch_assoc()['total'] : 0;
+$total_pages = ceil($total_transaksi / $per_page);
+
+// Get all transactions with pagination
+$semua_transaksi = $conn->query("SELECT s.*, p.nama_lengkap as nama_penyewa, pr.nama_mesin 
                                   FROM sewa s 
                                   JOIN penyewa p ON s.id_penyewa = p.id 
                                   JOIN produk pr ON s.id_produk = pr.id 
-                                  ORDER BY s.tanggal_sewa DESC LIMIT 5");
-if (!$transaksi_terbaru) {
-    $transaksi_terbaru = false;
+                                  ORDER BY s.tanggal_sewa DESC 
+                                  LIMIT $per_page OFFSET $offset");
+if (!$semua_transaksi) {
+    $semua_transaksi = false;
 }
 ?>
 
@@ -93,8 +104,9 @@ if (!$transaksi_terbaru) {
             </div>
             
             <div class="card mb-4">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">Transaksi Terbaru</h5>
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Semua Transaksi</h5>
+                    <span class="badge bg-light text-dark">Total: <?php echo $total_transaksi; ?> transaksi</span>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -105,18 +117,22 @@ if (!$transaksi_terbaru) {
                                     <th>Penyewa</th>
                                     <th>Produk</th>
                                     <th>Tanggal Sewa</th>
+                                    <th>Tanggal Kembali</th>
+                                    <th>Jumlah</th>
                                     <th>Total</th>
                                     <th>Status</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php if($transaksi_terbaru && $transaksi_terbaru->num_rows > 0): ?>
-                                    <?php while($row = $transaksi_terbaru->fetch_assoc()): ?>
+                                <?php if($semua_transaksi && $semua_transaksi->num_rows > 0): ?>
+                                    <?php while($row = $semua_transaksi->fetch_assoc()): ?>
                                     <tr>
                                         <td><?php echo $row['id']; ?></td>
                                         <td><?php echo $row['nama_penyewa']; ?></td>
                                         <td><?php echo $row['nama_mesin']; ?></td>
                                         <td><?php echo date('d/m/Y', strtotime($row['tanggal_sewa'])); ?></td>
+                                        <td><?php echo $row['tanggal_kembali'] ? date('d/m/Y', strtotime($row['tanggal_kembali'])) : '-'; ?></td>
+                                        <td><?php echo $row['jumlah']; ?></td>
                                         <td>Rp <?php echo number_format($row['total_harga'], 0, ',', '.'); ?></td>
                                         <td>
                                             <?php 
@@ -134,12 +150,31 @@ if (!$transaksi_terbaru) {
                                     <?php endwhile; ?>
                                 <?php else: ?>
                                     <tr>
-                                        <td colspan="6" class="text-center">Tidak ada transaksi</td>
+                                        <td colspan="8" class="text-center">Tidak ada transaksi</td>
                                     </tr>
                                 <?php endif; ?>
                             </tbody>
                         </table>
                     </div>
+                    
+                    <!-- Pagination -->
+                    <?php if($total_pages > 1): ?>
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item <?php echo $page <= 1 ? 'disabled' : ''; ?>">
+                                <a class="page-link" href="?page=<?php echo $page - 1; ?>" tabindex="-1">Previous</a>
+                            </li>
+                            <?php for($i = 1; $i <= $total_pages; $i++): ?>
+                            <li class="page-item <?php echo $page == $i ? 'active' : ''; ?>">
+                                <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                            </li>
+                            <?php endfor; ?>
+                            <li class="page-item <?php echo $page >= $total_pages ? 'disabled' : ''; ?>">
+                                <a class="page-link" href="?page=<?php echo $page + 1; ?>">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

@@ -12,11 +12,37 @@ if (!is_user_logged_in()) {
 
 $produk_id = $_GET['produk_id'] ?? 0;
 
+// Debug output
+if (ENVIRONMENT === 'development') {
+    echo "<div style='background: #f0f0f0; padding: 10px; margin: 10px; border: 1px solid #ccc;'>";
+    echo "<strong>DEBUG:</strong><br>";
+    echo "produk_id from URL: '$produk_id'<br>";
+    echo "REQUEST_URI: " . $_SERVER['REQUEST_URI'] . "<br>";
+    echo "</div>";
+}
+
 // Get product using helper
 $produk = getProductById($conn, $produk_id);
 
 if (!$produk) {
-    echo "Produk tidak ditemukan";
+    echo "<div style='background: #ffe6e6; padding: 20px; margin: 20px; border: 1px solid #ff0000;'>";
+    echo "<h3>Produk tidak ditemukan</h3>";
+    echo "<p>produk_id: '$produk_id'</p>";
+    echo "<p><a href='/akasa_teknik/pages/produk.php'>← Kembali ke Daftar Produk</a></p>";
+    if (ENVIRONMENT === 'development') {
+        echo "<hr>";
+        echo "<h4>Debug Info:</h4>";
+        $result = $conn->query("SELECT id, nama_mesin FROM produk ORDER BY id");
+        if ($result && $result->num_rows > 0) {
+            echo "<p>Available Products:</p>";
+            echo "<ul>";
+            while ($row = $result->fetch_assoc()) {
+                echo "<li><a href='?produk_id={$row['id']}'>ID {$row['id']}: {$row['nama_mesin']}</a></li>";
+            }
+            echo "</ul>";
+        }
+    }
+    echo "</div>";
     exit();
 }
 
@@ -101,13 +127,9 @@ require_once __DIR__ . '/includes/header.php';
                                 <hr>
                                 
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-12">
                                         <p class="mb-1"><strong>Subtotal:</strong></p>
-                                        <p class="h5" id="subtotal">Rp 0</p>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <p class="mb-1"><strong>Total Bayar:</strong></p>
-                                        <p class="h3 text-primary" id="totalPrice">Rp 0</p>
+                                        <p class="h5 text-primary" id="subtotal">Rp 0</p>
                                     </div>
                                 </div>
                             </div>
