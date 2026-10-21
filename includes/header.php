@@ -57,7 +57,7 @@ $seo_data = generate_seo_meta($current_page);
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="<?php echo CSS_URL; ?>style.css">
     <link rel="stylesheet" href="<?php echo CSS_URL; ?>mobile.css">
@@ -72,9 +72,11 @@ $seo_data = generate_seo_meta($current_page);
     </script>
 </head>
 <body class="d-flex flex-column min-vh-100">
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <?php include 'navbar.php'; ?>
     
-    <main class="flex-grow-1">
+    <main class="flex-grow-1" id="main-content">
         <!-- Flash Messages -->
         <?php if (isset($_SESSION['flash_message'])): ?>
             <div class="container mt-3">

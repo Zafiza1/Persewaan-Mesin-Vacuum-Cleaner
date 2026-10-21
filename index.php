@@ -16,15 +16,15 @@ if(isAdmin()) {
 require_once __DIR__ . '/includes/header.php';
 ?>
 
-<section class="hero-section text-white py-5">
+<section class="hero-section text-white py-5 my-4">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6">
                 <span class="glass-badge hero-label mb-3 d-inline-flex align-items-center gap-2">
                     <i class="fas fa-bolt"></i> Akasa Teknik
                 </span>
-                <h1 class="hero-title mb-4">Sewa Vacuum Cleaner</h1>
-                <p class="lead hero-subtitle mb-5">Pilih mesin, tentukan jadwal, kami kerjakan sisanya.</p>
+                <h1 class="mb-4">Sewa Vacuum Cleaner</h1>
+                <p class="lead mb-5">Pilih mesin, tentukan jadwal, kami kerjakan sisanya.</p>
 
                 <div class="d-flex flex-wrap gap-3 mb-4">
                     <a href="<?php echo PAGES_URL; ?>produk.php" class="btn btn-primary btn-lg">
@@ -38,7 +38,7 @@ require_once __DIR__ . '/includes/header.php';
             </div>
             <div class="col-lg-6 mt-5 mt-lg-0">
                 <div class="hero-visual text-center">
-                    <img src="<?php echo IMAGES_URL; ?>logo.png" alt="Akasa Teknik" class="img-fluid" style="max-width: 360px;" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2NjYyIvPjwvc3ZnPg=='">
+                    <img src="<?php echo IMAGES_URL; ?>logo.png" alt="Akasa Teknik" class="img-fluid" style="max-width: 100%; height: auto;" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2NjYyIvPjwvc3ZnPg=='">
                 </div>
             </div>
         </div>
@@ -46,43 +46,37 @@ require_once __DIR__ . '/includes/header.php';
 </section>
 
 <!-- Kenapa Sewa di Akasa Teknik? -->
-<section class="py-5 bg-light">
+<section class="py-5">
     <div class="container">
         <div class="text-center mb-5">
             <span class="badge bg-primary mb-2">KEUNGGULAN KAMI</span>
             <h2 class="fw-bold">Kenapa Sewa di Akasa Teknik?</h2>
             <p class="text-muted">Solusi terbaik untuk kebutuhan cleaning profesional Anda</p>
         </div>
-        
+
         <div class="row g-4">
             <div class="col-md-4">
-                <div class="text-center">
-                    <div class="feature-icon mb-3">
-                        <div class="icon-box bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
-                            <i class="fas fa-bolt fa-2x"></i>
-                        </div>
+                <div class="feature-card text-center">
+                    <div class="icon-wrapper mb-3 mx-auto">
+                        <i class="fas fa-bolt fa-2x"></i>
                     </div>
                     <h4 class="fw-bold">Cepat & Praktis</h4>
                     <p class="text-muted">Proses pemesanan mudah, pengantaran tepat waktu, tanpa ribet. Siap pakai dalam hitungan jam.</p>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="text-center">
-                    <div class="feature-icon mb-3">
-                        <div class="icon-box bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
-                            <i class="fas fa-shield-alt fa-2x"></i>
-                        </div>
+                <div class="feature-card text-center">
+                    <div class="icon-wrapper mb-3 mx-auto">
+                        <i class="fas fa-shield-alt fa-2x"></i>
                     </div>
                     <h4 class="fw-bold">Mesin Terawat</h4>
                     <p class="text-muted">Semua unit rutin maintenance, performa optimal, dan selalu dalam kondisi prima.</p>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="text-center">
-                    <div class="feature-icon mb-3">
-                        <div class="icon-box bg-warning text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
-                            <i class="fas fa-tag fa-2x"></i>
-                        </div>
+                <div class="feature-card text-center">
+                    <div class="icon-wrapper mb-3 mx-auto">
+                        <i class="fas fa-tag fa-2x"></i>
                     </div>
                     <h4 class="fw-bold">Harga Terjangkau</h4>
                     <p class="text-muted">Tarif kompetitif untuk sewa harian dan bulanan.</p>
@@ -228,7 +222,7 @@ require_once __DIR__ . '/includes/header.php';
 
     <div class="row g-4 mb-5">
         <div class="col-md-4">
-            <div class="card h-100 border-0">
+            <div class="card h-100">
                 <img src="<?php echo IMAGES_URL; ?>products/vc2.jpg" class="card-img-top" alt="Vacuum Cleaner 21 L" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2NjYyIvPjwvc3ZnPg=='">
                 <div class="card-body">
                     <h5 class="card-title mb-0">Vacuum 21 L</h5>
@@ -238,7 +232,7 @@ require_once __DIR__ . '/includes/header.php';
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card h-100 border-0">
+            <div class="card h-100">
                 <img src="<?php echo IMAGES_URL; ?>products/vc3.jpg" class="card-img-top" alt="Vacuum Cleaner 40 L" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVqdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2NjYyIvPjwvc3ZnPg=='">
                 <div class="card-body">
                     <h5 class="card-title mb-0">Vacuum 40 L</h5>
@@ -248,7 +242,7 @@ require_once __DIR__ . '/includes/header.php';
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card h-100 border-0">
+            <div class="card h-100">
                 <img src="<?php echo IMAGES_URL; ?>products/vc4.jpg" class="card-img-top" alt="Vacuum Cleaner 80 L" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2NjYyIvPjwvc3ZnPg=='">
                 <div class="card-body">
                     <h5 class="card-title mb-0">Vacuum 80 L</h5>
