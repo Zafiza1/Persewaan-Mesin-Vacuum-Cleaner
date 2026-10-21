@@ -1,0 +1,26 @@
+# Environment files
+.env
+.installed
+
+# Database files
+database/*.db
+database/*.db-shm
+database/*.db-wal
+
+# IDE files
+.vscode/
+.idea/
+.windsurf/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Setup file (security)
+setup.php
+
+# Logs
+*.log

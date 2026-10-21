@@ -45,17 +45,17 @@ if ($products === false) {
                 <?php foreach($products as $row): ?>
                     <article class="col-md-4 mb-4">
                         <div class="card h-100 product-card">
-                            <img src="<?php echo IMAGES_URL; ?>products/<?php echo $row['gambar']; ?>" class="card-img-top w-100" style="object-fit: cover; height: 250px;" alt="<?php echo htmlspecialchars($row['nama_mesin']); ?>" onerror="this.src='<?php echo IMAGES_URL; ?>placeholder.jpg'">
+                            <img src="<?php echo IMAGES_URL . $row['gambar']; ?>" class="card-img-top w-100" style="object-fit: cover; height: 250px;" alt="<?php echo htmlspecialchars($row['nama_mesin']); ?>" onerror="this.src='<?php echo IMAGES_URL; ?>placeholder.jpg'">
                             <div class="card-body">
                                 <h3 class="card-title h5"><?php echo htmlspecialchars($row['nama_mesin']); ?></h3>
-                                <p class="card-text"><?php echo htmlspecialchars(substr($row['deskripsi'] ?? '', 0, 100)); ?>...</p>
+                                <p class="card-text"><?php echo htmlspecialchars(substr($row['spesifikasi'] ?? '', 0, 100)); ?>...</p>
                                 <div class="price-info mb-3">
                                     <p class="text-primary fw-bold">Rp <?php echo number_format($row['harga_sewa_per_hari'], 0, ',', '.'); ?>/hari</p>
                                     <p class="text-muted small">Stok: <?php echo (int)$row['stok']; ?> unit tersedia</p>
                                 </div>
                             </div>
                             <div class="card-footer bg-transparent">
-                                <a href="/akasa_teknik/form_sewa_simple.php?produk_id=<?php echo (int)$row['id']; ?>" class="btn btn-primary w-100">
+                                <a href="<?php echo BASE_URL; ?>form_sewa_simple.php?produk_id=<?php echo (int)$row['id']; ?>" class="btn btn-primary w-100">
                                     <i class="fas fa-shopping-cart me-1"></i> Sewa Sekarang
                                 </a>
                             </div>

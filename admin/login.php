@@ -55,13 +55,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $errors[] = "Terjadi kesalahan sistem. Silakan coba lagi.";
                 } else {
                     $result = $stmt->get_result();
-                    
+
                     if($result->num_rows == 1) {
                         $admin = $result->fetch_assoc();
                         if(password_verify($password, $admin['password'])) {
                             // Regenerate session ID to prevent session fixation
                             session_regenerate_id(true);
-                            
+
                             // Clear any user session to prevent mixing
                             unset($_SESSION['user_id']);
                             unset($_SESSION['username']);
@@ -69,11 +69,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                             unset($_SESSION['email']);
                             unset($_SESSION['no_hp']);
                             unset($_SESSION['alamat']);
-                            
+
                             $_SESSION['admin_id'] = $admin['id'];
                             $_SESSION['admin_username'] = $admin['username'];
                             $_SESSION['admin_nama'] = $admin['nama_lengkap'];
-                            
+
                             $stmt->close();
                             redirect_with_message(ADMIN_URL . 'dashboard.php', '', 'success');
                         } else {

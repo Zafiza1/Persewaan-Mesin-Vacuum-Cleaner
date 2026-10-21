@@ -71,50 +71,45 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bind_param("s", $username);
         $stmt->execute();
         $result = $stmt->get_result();
-        
+
         if ($result->num_rows > 0) {
             $errors[] = "Username sudah digunakan.";
         }
         $stmt->close();
     }
-    
+
     // Check if email already exists
     if (empty($errors)) {
         $stmt = $conn->prepare("SELECT id FROM admin WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();
-        
+
         if ($result->num_rows > 0) {
             $errors[] = "Email sudah digunakan.";
         }
         $stmt->close();
     }
-    
+
     // Proceed with registration if no errors
     if (empty($errors)) {
-        // Check database connection
-        if ($conn->connect_error) {
+        // Hash password
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+        // Insert new admin
+        $stmt = $conn->prepare("INSERT INTO admin (username, password, nama_lengkap, email) VALUES (?, ?, ?, ?)");
+        if (!$stmt) {
             $errors[] = "Terjadi kesalahan sistem. Silakan coba lagi.";
         } else {
-            // Hash password
-            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-            
-            // Insert new admin
-            $stmt = $conn->prepare("INSERT INTO admin (username, password, nama_lengkap, email) VALUES (?, ?, ?, ?)");
-            if (!$stmt) {
-                $errors[] = "Terjadi kesalahan sistem. Silakan coba lagi.";
+            $stmt->bind_param("ssss", $username, $hashed_password, $nama_lengkap, $email);
+            if ($stmt->execute()) {
+                $success = "Registrasi berhasil! Silakan login.";
+                // Clear form
+                $username = $password = $confirm_password = $nama_lengkap = $email = '';
             } else {
-                $stmt->bind_param("ssss", $username, $hashed_password, $nama_lengkap, $email);
-                if ($stmt->execute()) {
-                    $success = "Registrasi berhasil! Silakan login.";
-                    // Clear form
-                    $username = $password = $confirm_password = $nama_lengkap = $email = '';
-                } else {
-                    $errors[] = "Terjadi kesalahan saat mendaftar. Silakan coba lagi.";
-                }
-                $stmt->close();
+                $errors[] = "Terjadi kesalahan saat mendaftar. Silakan coba lagi.";
             }
+            $stmt->close();
         }
     }
 }

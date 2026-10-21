@@ -79,7 +79,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt->close();
         }
     }
-    
+
     // Check if email already exists
     if (empty($errors)) {
         $stmt = $conn->prepare("SELECT id FROM penyewa WHERE email = ?");
@@ -98,7 +98,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt->close();
         }
     }
-    
+
     // Insert new user if no errors
     if (empty($errors)) {
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
@@ -107,7 +107,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             $errors[] = "Terjadi kesalahan sistem. Silakan coba lagi.";
         } else {
             $stmt->bind_param("ssssss", $username, $hashed_password, $nama_lengkap, $alamat, $no_hp, $email);
-            
+
             if($stmt->execute()) {
                 $stmt->close();
                 redirect_with_message(USER_URL . 'login.php', 'Pendaftaran berhasil. Silakan login.', 'success');

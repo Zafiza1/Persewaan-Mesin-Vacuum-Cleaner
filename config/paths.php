@@ -55,7 +55,16 @@ define('JS_PATH', ASSETS_PATH . 'js/');
 define('IMAGES_PATH', ASSETS_PATH . 'images/');
 
 // URL paths (for use in HTML)
-define('BASE_URL', '/akasa_teknik/');
+// Detect base URL automatically for better portability
+$protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
+$host = $_SERVER['HTTP_HOST'];
+$script_name = $_SERVER['SCRIPT_NAME'];
+$base_path = dirname(dirname($script_name));
+
+// Remove trailing slash from base_path if present
+$base_path = rtrim($base_path, '/');
+
+define('BASE_URL', $protocol . '://' . $host . $base_path . '/');
 define('CSS_URL', BASE_URL . 'assets/css/');
 define('JS_URL', BASE_URL . 'assets/js/');
 define('IMAGES_URL', BASE_URL . 'assets/images/');

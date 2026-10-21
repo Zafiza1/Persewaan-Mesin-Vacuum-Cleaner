@@ -55,17 +55,17 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $errors[] = "Terjadi kesalahan sistem. Silakan coba lagi.";
                 } else {
                     $result = $stmt->get_result();
-                    
+
                     if($result->num_rows == 1) {
                         $user = $result->fetch_assoc();
                         if(password_verify($password, $user['password'])) {
                             // Regenerate session ID to prevent session fixation
                             session_regenerate_id(true);
-                            
+
                             // Clear any admin session to prevent mixing
                             unset($_SESSION['admin_id']);
                             unset($_SESSION['admin_username']);
-                            
+
                             // Set user session data
                             $_SESSION['user_id'] = $user['id'];
                             $_SESSION['username'] = $user['username'];
@@ -73,10 +73,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                             $_SESSION['email'] = $user['email'];
                             $_SESSION['no_hp'] = $user['no_hp'];
                             $_SESSION['alamat'] = $user['alamat'];
-                            
+
                             // Reset login attempts
                             $_SESSION['login_attempts'] = 0;
-                            
+
                             // Redirect based on previous destination or user dashboard
                             if(isset($_SESSION['login_redirect'])) {
                                 $redirect = $_SESSION['login_redirect'];

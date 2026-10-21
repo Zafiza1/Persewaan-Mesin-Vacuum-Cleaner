@@ -13,8 +13,12 @@ require_once __DIR__ . '/../includes/seo.php';
 header("X-Content-Type-Options: nosniff");
 header("X-Frame-Options: DENY");
 header("X-XSS-Protection: 1; mode=block");
-header("Strict-Transport-Security: max-age=31536000; includeSubDomains");
 header("Referrer-Policy: strict-origin-when-cross-origin");
+
+// HSTS only for HTTPS
+if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+    header("Strict-Transport-Security: max-age=31536000; includeSubDomains");
+}
 
 // Determine current page for SEO
 $current_page = 'home';
